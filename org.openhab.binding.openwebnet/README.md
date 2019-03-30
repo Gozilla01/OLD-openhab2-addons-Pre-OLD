@@ -171,12 +171,12 @@ Parameters for configuration:
 
 - `host` : IP address / hostname of the BUS/SCS gateway (*mandatory*)
    - Example: `192.168.1.35`
-- `port` : port (*optional*, default: `20000`)
+- `port` : port (*required*, default: `20000`)
 - `passwd` : gateway password (*required* for gateways that have a password set. Default: `12345`)
    - Example: `abcde` or `12345`
    - if the BUS/SCS gateway is configured to accept connections from the openHAB computer IP address, no password should be required
    - in all other cases, a password must be set. This includes  gateways that have been discovered and added from Inbox that without a password settings will not become ONLINE
-- `discoveryByActivation` : **=EXPERIMENTAL=** discover BUS devices when they are activated also when a device scan is not currently active (*optional*, default: `false`)
+- `discoveryByActivation` : **=EXPERIMENTAL=** discover BUS devices when they are activated also when a device scan is not currently active (*required*, default: `false`)
 
 Alternatively the BUS/SCS Gateway thing can be configured using the `.things` file, see `openwebnet.things` example [below](#full-example).
 
@@ -295,7 +295,7 @@ You will need to add tags manually for items created using PaperUI when Simple M
 ### openwebnet.things:
 
 ```xtend
-Bridge openwebnet:bus_gateway:mybridge "MyHOMEServer1" [ host="192.168.1.35", passwd="abcde" ] {
+Bridge openwebnet:bus_gateway:mybridge "MyHOMEServer1" [ host="192.168.1.35", passwd="abcde", discoveryByActivation=true ] {
       bus_on_off_switch        LR_switch        "Living Room Light"       [ where="51" ]
       bus_dimmer               LR_dimmer        "Living Room Dimmer"      [ where="25#4#01" ]
       bus_dimmer               LR_dalidimmer    "Living Room Dali-Dimmer" [ where="0311#4#01" ]
@@ -306,6 +306,7 @@ Bridge openwebnet:bus_gateway:mybridge "MyHOMEServer1" [ host="192.168.1.35", pa
       bus_cen_scenario_control LR_CEN_scenario  "Living Room CEN" [ where="51", buttons="4,3,8"]
       bus_cenplus_scenario_control  LR_CENplus_scenario "Living Room CEN+"        [ where="212", buttons="1,5,18" ]
       bus_dry_contact_ir       LR_IR_sensor     "Living Room IR Sensor"   [ where="399" ]
+      bus_on_off_aux           LR_aux           "Alarm auxiliary"         [ where="1" ]
 }
 ``` 
 
@@ -334,6 +335,7 @@ Number         iCENTRAL_en_power "Power [%.0f W]"         <energy>            { 
 String         iLR_scenario_btn4  "Scenario Button 4"     <network>           { channel="openwebnet:bus_cen_scenario_control:mybridge:LR_CEN_scenario:button_4" }  
 String         iLR_scenario_btn1  "Scenario Button 1"     <network>           { channel="openwebnet:bus_cenplus_scenario_control:mybridge:LR_CENplus_scenario:button_1" }  
 Switch         iLR_IR_sensor      "Living Room IR sensor" <motion>            { channel="openwebnet:bus_dry_contact_ir:mybridge:LR_IR_sensor:sensor" }
+Switch         iLR_aux            "Alarm auxiliary 1"                         { channel="openwebnet:bus_on_off_aux:mybridge:LR_aux:switch" }
 
 /* Thermostat Setup (Google Assitant/Alexa require thermostat items to be grouped together) */
 Group   gLR_thermostat               "Living Room Thermostat"                                     [ "Thermostat" ]
@@ -428,6 +430,22 @@ See: https://github.com/mvalla/openhab2-addons/issues/34
 See: https://github.com/mvalla/openhab2-addons/issues/14
 
 ## Changelog
+
+**v2.5.0.M3-pre8** - 30/03/2019
+- **[FIX #12] [FIX #32] command auxiliary `WHO=9` of bus is now supported**
+- [FIX #63] added channel `shutterMotion` per rollershutter
+- [FIX #63] change name channel `shutter` to `shutterPosition` per rollershutter
+- [FIX #30] manually configured things should not be found again using an Inbox scan
+- [FIX #69] updating of article statuses, lighting and automation, with the received AMB-GR-GEN commands.
+- [FIX #67] modify parameter `discoveryByActivation` from string to boolean and required, default is false
+- [FIX #67] added default values for password on the bus gateway
+- [FIX #67] added default values and required for port on the bus gateway
+- added examples to README.md
+
+**ATTENTION breaking bindings**
+- channel `shutter`  to  `shutterPosition` per rollershutter
+- `discoveryByActivation` from string to boolean 
+
 
 **v2.5.0.M2-1** - 20/03/2019
 - [FIX #66] USB dongle (gateway) cannot connect anymore

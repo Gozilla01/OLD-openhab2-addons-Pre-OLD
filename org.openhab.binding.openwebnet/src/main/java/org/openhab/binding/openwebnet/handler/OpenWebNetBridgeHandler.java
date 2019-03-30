@@ -584,6 +584,20 @@ public class OpenWebNetBridgeHandler extends ConfigStatusBridgeHandler implement
         return normalizeWhere(where).replace('#', 'h'); // '#' cannot be used in ThingUID;
     }
 
+    /**
+     * Return a boolean existing ownId in Map
+     *
+     * @param string ownId
+     * @return boolean
+     */
+    public boolean ownIdExisting(String ownId) {
+        OpenWebNetThingHandler deviceHandlerEx = getDevice(ownId);
+        if (deviceHandlerEx != null) {
+            return true;
+        }
+        return false;
+    }
+
     // @formatter:off
     /**
      *
