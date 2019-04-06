@@ -431,6 +431,9 @@ See: https://github.com/mvalla/openhab2-addons/issues/14
 
 ## Changelog
 
+**v2.5.0.M3-pre12** - 05/04/2019
+- [FIX #80] thermo: setmode in MANUAL not work
+
 **v2.5.0.M3-pre8** - 30/03/2019
 - **[FIX #12] [FIX #32] command auxiliary `WHO=9` of bus is now supported**
 - [FIX #63] added channel `shutterMotion` per rollershutter
