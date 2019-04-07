@@ -14,6 +14,7 @@ package org.openhab.binding.openwebnet.handler;
 
 import static org.openhab.binding.openwebnet.OpenWebNetBindingConstants.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -46,7 +47,6 @@ public class OpenWebNetLightingHandler extends OpenWebNetThingHandler {
     public final static Set<ThingTypeUID> SUPPORTED_THING_TYPES = OpenWebNetBindingConstants.LIGHTING_SUPPORTED_THING_TYPES;
 
     protected Lighting.Type lightingType = Lighting.Type.ZIGBEE;
-
     private double lastBrightnessChangeSentTS = 0; // timestamp when last brightness change was sent to the device
     private static final int BRIGHTNESS_CHANGE_DELAY = 1500; // ms delay to wait before sending a brightness status
                                                              // request
@@ -54,6 +54,7 @@ public class OpenWebNetLightingHandler extends OpenWebNetThingHandler {
     private boolean brightnessLevelRequested = false; // was the brightness level requested ?
     private int latestBrightnessWhat = -1; // latest brightness WHAT value (-1 = unknown)
     private int latestBrightnessWhatBeforeOff = -1; // latest brightness WHAT value before device was set to off
+    private int what = 0; // address what
 
     public OpenWebNetLightingHandler(@NonNull Thing thing) {
         super(thing);
@@ -64,6 +65,9 @@ public class OpenWebNetLightingHandler extends OpenWebNetThingHandler {
     public void initialize() {
         super.initialize();
         logger.debug("==OWN:LightingHandler== initialize() thing={}", thing.getUID());
+        if (getConfig().get(CONFIG_PROPERTY_WHAT) != null) {
+            what = ((BigDecimal) getConfig().get(CONFIG_PROPERTY_WHAT)).intValue();
+        }
         if (bridgeHandler != null && bridgeHandler.isBusGateway()) {
             lightingType = Lighting.Type.POINT_TO_POINT;
         }
@@ -109,14 +113,19 @@ public class OpenWebNetLightingHandler extends OpenWebNetThingHandler {
         logger.debug("==OWN:LightingHandler== handleSwitchCommand() (command={} - channel={})", command, channel);
         if (command instanceof OnOffType) {
             if (OnOffType.ON.equals(command)) {
-                bridgeHandler.gateway.send(Lighting.requestTurnOn(toWhere(channel), lightingType));
+                if (what == 0) {
+                    bridgeHandler.gateway.send(Lighting.requestTurnOn(toWhere(channel), lightingType));
+                } else {
+                    //
+                    // WHAT ........
+                    //
+                }
             } else if (OnOffType.OFF.equals(command)) {
                 bridgeHandler.gateway.send(Lighting.requestTurnOff(toWhere(channel), lightingType));
             }
         } else {
             logger.warn("==OWN:LightingHandler== Unsupported command: {}", command);
         }
-
     }
 
     /**

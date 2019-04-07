@@ -68,7 +68,7 @@ public class OpenWebNetBindingConstants {
     public static final String THING_LABEL_BUS_CENPLUS_SCENARIO_CONTROL = "CEN+ Control";
     public static final ThingTypeUID THING_TYPE_BUS_DRY_CONTACT_IR = new ThingTypeUID(BINDING_ID, "bus_dry_contact_ir");
     public static final String THING_LABEL_BUS_DRY_CONTACT_IR = "Dry Contact/IR";
-    
+
     public static final ThingTypeUID THING_TYPE_BUS_AUX_TOGGLE = new ThingTypeUID(BINDING_ID, "bus_on_off_aux");
     public static final String THING_LABEL_BUS_AUX_TOGGLE = "Auxiliary";
     // ZIGBEE
@@ -103,7 +103,7 @@ public class OpenWebNetBindingConstants {
     public static final Set<ThingTypeUID> SCENARIO_SUPPORTED_THING_TYPES = Sets.newHashSet(
             THING_TYPE_BUS_CEN_SCENARIO_CONTROL, THING_TYPE_BUS_CENPLUS_SCENARIO_CONTROL,
             THING_TYPE_BUS_DRY_CONTACT_IR);
-	// ## AUX
+    // ## AUX
     public static final Set<ThingTypeUID> AUX_SUPPORTED_THING_TYPES = Sets.newHashSet(THING_TYPE_BUS_AUX_TOGGLE);
     // ## Groups
     public static final Set<ThingTypeUID> DEVICE_SUPPORTED_THING_TYPES = Sets.union(LIGHTING_SUPPORTED_THING_TYPES,
@@ -148,12 +148,13 @@ public class OpenWebNetBindingConstants {
     public static final String CHANNEL_TYPE_SCENARIO_BUTTON = "scenarioButton";
 
     public static final String CHANNEL_DRY_CONTACT_IR = "sensor";
-	// auxiliary
+    // auxiliary
     public static final String CHANNEL_AUX = "switch";
     // devices config properties
     public static final String CONFIG_PROPERTY_WHERE = "where";
     public static final String CONFIG_PROPERTY_SHUTTER_RUN = "shutterRun";
     public static final String CONFIG_PROPERTY_SCENARIO_BUTTONS = "buttons";
+    public static final String CONFIG_PROPERTY_WHAT = "what";
     // BUS gw config properties
     public static final String CONFIG_PROPERTY_SERIAL_PORT = "serialPort";
     public static final String CONFIG_PROPERTY_HOST = "host";
